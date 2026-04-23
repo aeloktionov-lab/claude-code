@@ -113,15 +113,29 @@ class AmoCRMClient:
     def _url(self, path: str) -> str:
         return f"https://{self.subdomain}.amocrm.ru/api/v4{path}"
 
-    def _post(self, path: str, data: dict) -> dict:
-        resp = requests.post(self._url(path), json=data, headers=self._headers())
+    def _request(self, method: str, path: str, **kwargs) -> dict:
+        """Выполнить запрос с retry на 503 и проверкой тела ответа."""
+        for attempt in range(3):
+            resp = requests.request(method, self._url(path), headers=self._headers(), **kwargs)
+            # AmoCRM иногда возвращает 503 с валидным JSON — проверяем тело
+            if resp.status_code == 503 and resp.text:
+                try:
+                    return resp.json()
+                except Exception:
+                    pass
+            if resp.status_code == 503 and attempt < 2:
+                time.sleep(2 ** attempt)
+                continue
+            resp.raise_for_status()
+            return resp.json() if resp.text else {}
         resp.raise_for_status()
-        return resp.json() if resp.text else {}
+        return {}
+
+    def _post(self, path: str, data: dict) -> dict:
+        return self._request("POST", path, json=data)
 
     def _get(self, path: str, params: dict = None) -> dict:
-        resp = requests.get(self._url(path), params=params, headers=self._headers())
-        resp.raise_for_status()
-        return resp.json() if resp.text else {}
+        return self._request("GET", path, params=params)
 
     # ── Утилиты ───────────────────────────────────────────────────────────
 
