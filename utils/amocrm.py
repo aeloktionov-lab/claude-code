@@ -1,4 +1,4 @@
-"""AmoCRM API client с OAuth2 авторизацией."""
+"""AmoCRM API client с поддержкой долгосрочных токенов и OAuth2."""
 import json
 import time
 from pathlib import Path
@@ -12,25 +12,37 @@ TOKEN_FILE = Path(__file__).parent.parent / ".amocrm_tokens.json"
 
 class AmoCRMClient:
     """
-    Клиент для работы с AmoCRM API v4 через OAuth2.
+    Клиент для работы с AmoCRM API v4.
 
-    Использование:
-        client = AmoCRMClient(subdomain, client_id, client_secret)
+    Режим 1 — долгосрочный токен (рекомендуется, фича с фев 2024):
+        client = AmoCRMClient("croid", long_term_token="ваш_токен")
+        client.create_lead(...)  # работает сразу
+
+    Режим 2 — OAuth2 (если нужен полный flow):
+        client = AmoCRMClient("croid", client_id=..., client_secret=...)
         client.authorize(authorization_code)  # один раз
         client.create_lead(...)               # дальше работает сам
     """
 
-    BASE_URL = "https://{subdomain}.amocrm.ru/api/v4"
-
-    def __init__(self, subdomain: str, client_id: str, client_secret: str, redirect_uri: str = "https://localhost"):
+    def __init__(
+        self,
+        subdomain: str,
+        long_term_token: Optional[str] = None,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        redirect_uri: str = "https://localhost",
+    ):
         self.subdomain = subdomain
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
-        self._access_token: Optional[str] = None
+        self._access_token: Optional[str] = long_term_token
         self._refresh_token: Optional[str] = None
-        self._token_expires_at: float = 0
-        self._load_tokens()
+        # Долгосрочный токен не истекает в рамках сессии — ставим далёкое будущее
+        self._token_expires_at: float = float("inf") if long_term_token else 0
+        self._long_term_mode: bool = long_term_token is not None
+        if not self._long_term_mode:
+            self._load_tokens()
 
     # ── Авторизация ───────────────────────────────────────────────────────
 
@@ -91,7 +103,7 @@ class AmoCRMClient:
             self._token_expires_at = data.get("expires_at", 0)
 
     def _headers(self) -> dict:
-        if time.time() >= self._token_expires_at:
+        if not self._long_term_mode and time.time() >= self._token_expires_at:
             self._refresh()
         return {
             "Authorization": f"Bearer {self._access_token}",
@@ -110,6 +122,12 @@ class AmoCRMClient:
         resp = requests.get(self._url(path), params=params, headers=self._headers())
         resp.raise_for_status()
         return resp.json() if resp.text else {}
+
+    # ── Утилиты ───────────────────────────────────────────────────────────
+
+    def check_connection(self) -> dict:
+        """Проверить соединение и вернуть данные аккаунта."""
+        return self._get("/account")
 
     # ── Контакты ──────────────────────────────────────────────────────────
 
