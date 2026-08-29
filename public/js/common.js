@@ -52,12 +52,6 @@ function renderLayout(activePage) {
   if (!header || !footer) return;
 
   fetchConfig().then((cfg) => {
-    const nameParts = cfg.BRAND_NAME.split('.');
-    const brandHtml =
-      nameParts.length > 1
-        ? `${nameParts[0]}<span class="dot">.${nameParts.slice(1).join('.')}</span>`
-        : cfg.BRAND_NAME;
-
     const links = [
       { href: '/index.html', label: 'Главная', key: 'home' },
       { href: '/catalog.html', label: 'Каталог', key: 'catalog' },
@@ -73,7 +67,7 @@ function renderLayout(activePage) {
 
     header.innerHTML = `
       <div class="container">
-        <a href="/index.html" class="logo">${brandHtml}</a>
+        <a href="/index.html" class="logo"><img src="/img/logo.svg" alt="${cfg.BRAND_NAME}" /></a>
         <nav class="main-nav">${navHtml}</nav>
         <div class="header-actions">
           <a href="tel:${cfg.PHONE.replace(/[^+\d]/g, '')}">${cfg.PHONE}</a>

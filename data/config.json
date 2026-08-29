@@ -7,9 +7,12 @@
   "TELEGRAM": "https://t.me/croid",
   "MIN_ORDER_QTY": 10,
   "COLORS": {
-    "primary": "#1A2B4C",
-    "accent": "#E8622C",
-    "bg": "#F7F7F5",
-    "text": "#1C1C1C"
+    "ink": "#1C1C1C",
+    "ink2": "#262626",
+    "ink3": "#2F2F2F",
+    "accent": "#CE7E4C",
+    "accentInk": "#A86334",
+    "paper": "#F4F1EC",
+    "fg": "#FFFFFF"
   }
 }
