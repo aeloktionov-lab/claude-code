@@ -53,6 +53,9 @@ ADMIN_PASSWORD=your-secret-password npm start
 - Реальные шаги для запуска компании (регистрация, счёт, поставщики) — `docs/launch-checklist.md`
 - Бизнес-план и юнит-экономика — `docs/business-plan.md`
 - Бренд-гайд — `docs/brand.md`
+- Скрипты холодных продаж и коммерческое предложение — `docs/sales-playbook.md`,
+  `docs/kp-croid.pdf` (перед отправкой замените в нём телефон/почту/telegram на реальные)
+- Telegram-уведомления о новых заявках — `docs/launch-checklist.md`, раздел 5
 
 ## Технологии
 

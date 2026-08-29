@@ -37,7 +37,8 @@ git clone https://github.com/aeloktionov-lab/claude-code.git /var/www/croid
 cd /var/www/croid/server
 npm install --omit=dev
 cp /var/www/croid/deploy/env.example /var/www/croid/server/.env
-nano /var/www/croid/server/.env   # задать надёжный ADMIN_PASSWORD
+nano /var/www/croid/server/.env   # ADMIN_PASSWORD + TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID
+                                    # (получить — docs/launch-checklist.md, раздел 5)
 exit   # обратно в root
 ```
 

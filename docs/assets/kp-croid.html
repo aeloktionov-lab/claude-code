@@ -1,0 +1,195 @@
+<!--
+  Источник docs/kp-croid.pdf. Цены/сроки продублированы вручную из data/products.json —
+  при изменении каталога обновите таблицу ниже и телефон/почту/telegram в футере,
+  затем пересоберите PDF headless-браузером, например:
+
+    npx --yes playwright@1.62 install chromium   # если браузера ещё нет
+    node -e "
+      const { chromium } = require('playwright');
+      (async () => {
+        const b = await chromium.launch();
+        const p = await b.newPage();
+        await p.goto('file://' + require('path').resolve('docs/assets/kp-croid.html'));
+        await p.pdf({ path: 'docs/kp-croid.pdf', format: 'A4', printBackground: true,
+          margin: { top: 0, bottom: 0, left: 0, right: 0 } });
+        await b.close();
+      })();
+    "
+-->
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    width: 210mm;
+    min-height: 297mm;
+    background: #F4F1EC;
+    color: #1C1C1C;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-weight: 500;
+  }
+  .page { padding: 14mm 18mm; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 7mm; }
+  .logo-mark { font-size: 22px; font-weight: 900; letter-spacing: -0.02em; }
+  .logo-mark .dot { color: #CE7E4C; }
+  .doc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(28,28,28,0.5);
+    text-align: right;
+  }
+  h1 {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 4mm;
+    max-width: 150mm;
+  }
+  .lede {
+    font-size: 13px;
+    color: rgba(28,28,28,0.75);
+    max-width: 150mm;
+    line-height: 1.5;
+    margin: 0 0 7mm;
+  }
+  .stats { display: flex; gap: 8mm; margin-bottom: 7mm; }
+  .stat {
+    flex: 1;
+    border: 1px solid rgba(28,28,28,0.14);
+    border-radius: 2px;
+    padding: 4mm;
+  }
+  .stat.accent { border-color: #CE7E4C; }
+  .stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(28,28,28,0.5);
+    margin-bottom: 3mm;
+  }
+  .stat.accent .lbl { color: #A86334; }
+  .stat .val { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1mm; }
+  .stat .sub { font-size: 11px; color: rgba(28,28,28,0.6); }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(28,28,28,0.55);
+    font-weight: 700;
+    border-bottom: 1px solid rgba(28,28,28,0.14);
+    padding-bottom: 3mm;
+    margin: 0 0 5mm;
+  }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 7mm; }
+  th, td { text-align: left; padding: 2.2mm 3mm; font-size: 12px; border-bottom: 1px solid rgba(28,28,28,0.1); }
+  th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(28,28,28,0.5);
+    font-weight: 600;
+  }
+  td.price { font-weight: 700; white-space: nowrap; }
+  td.muted { color: rgba(28,28,28,0.6); }
+
+  .steps { display: flex; gap: 6mm; margin-bottom: 7mm; }
+  .step { flex: 1; }
+  .step .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #CE7E4C;
+    font-weight: 700;
+    margin-bottom: 2mm;
+  }
+  .step .t { font-size: 13px; font-weight: 700; margin-bottom: 1mm; }
+  .step .d { font-size: 11px; color: rgba(28,28,28,0.6); line-height: 1.4; }
+
+  .footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(28,28,28,0.14);
+    padding-top: 6mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 12px;
+  }
+  .footer .cta { font-size: 15px; font-weight: 800; margin-bottom: 2mm; }
+  .footer .contacts { color: rgba(28,28,28,0.7); line-height: 1.6; }
+  .footer .contacts b { color: #1C1C1C; }
+</style>
+</head>
+<body>
+  <div class="page" style="display:flex; flex-direction:column; min-height: 269mm;">
+    <div class="top">
+      <div class="logo-mark">CROID<span class="dot">.RU</span></div>
+      <div class="doc-label">Коммерческое предложение</div>
+    </div>
+
+    <h1>Корпоративная одежда с вашим&nbsp;логотипом — шьём под заказ</h1>
+    <p class="lede">Деловая форма, спецодежда, худи и промо-мерч с нанесением логотипа.
+      Готовых изделий на складе нет — каждая партия шьётся под ваш тираж, размерный
+      ряд и логотип. Один поставщик, один менеджер, понятные сроки.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="lbl">01 / Партия</div>
+        <div class="val">от 10 шт</div>
+        <div class="sub">минимальный тираж по большинству позиций</div>
+      </div>
+      <div class="stat accent">
+        <div class="lbl">02 / Срок</div>
+        <div class="val">5–18 дней</div>
+        <div class="sub">от макета логотипа до отгрузки</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">03 / Оплата</div>
+        <div class="val">по счёту</div>
+        <div class="sub">для юрлиц, предоплата перед пошивом</div>
+      </div>
+    </div>
+
+    <h2>Ассортимент и цены</h2>
+    <table>
+      <thead>
+        <tr><th>Категория</th><th>Пример позиции</th><th>Цена</th><th>Мин. партия</th><th>Срок пошива</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Деловой стиль</td><td class="muted">Поло «Классик» с вышивкой логотипа</td><td class="price">от 2 400 ₽/шт</td><td>10 шт</td><td>10–14 дней</td></tr>
+        <tr><td>Верхняя одежда</td><td class="muted">Худи «Команда» с DTF-печатью</td><td class="price">от 3 200 ₽/шт</td><td>10 шт</td><td>12–15 дней</td></tr>
+        <tr><td>Спецодежда</td><td class="muted">Костюм рабочий усиленный</td><td class="price">от 3 600 ₽/шт</td><td>10 шт</td><td>14–18 дней</td></tr>
+        <tr><td>HoReCa</td><td class="muted">Фартук с вышивкой лого</td><td class="price">от 1 400 ₽/шт</td><td>10 шт</td><td>10–12 дней</td></tr>
+        <tr><td>Промо / мерч</td><td class="muted">Футболка промо под мероприятие</td><td class="price">от 900 ₽/шт</td><td>20 шт</td><td>5–7 дней</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Как мы работаем</h2>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><div class="t">Заявка</div><div class="d">Список позиций, тираж и логотип — в любом удобном формате</div></div>
+      <div class="step"><div class="num">02</div><div class="t">Смета</div><div class="d">Считаем цену и сроки в течение дня</div></div>
+      <div class="step"><div class="num">03</div><div class="t">Образец</div><div class="d">Согласуем цвет, размеры и нанесение перед тиражом</div></div>
+      <div class="step"><div class="num">04</div><div class="t">Партия</div><div class="d">Пошив и доставка партии на ваш адрес</div></div>
+    </div>
+
+    <div class="footer">
+      <div>
+        <div class="cta">Пришлите список позиций — посчитаем смету за день</div>
+      </div>
+      <div class="contacts">
+        <b>+7 (900) 000-00-00</b> · sales@croid.ru<br />
+        croid.ru · Telegram: @croid
+      </div>
+    </div>
+  </div>
+</body>
+</html>

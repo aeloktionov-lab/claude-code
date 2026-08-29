@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const db = require('../db');
+const { notifyNewOrder, notifyNewLead } = require('../notify');
 
 const router = express.Router();
 
@@ -77,6 +78,18 @@ router.post('/orders', (req, res) => {
     total,
   });
 
+  const order = {
+    id: info.lastInsertRowid,
+    company: req.body.company.trim(),
+    contactName: req.body.contactName.trim(),
+    phone: req.body.phone.trim(),
+    email: (req.body.email || '').trim(),
+    comment: (req.body.comment || '').trim(),
+    items,
+    total,
+  };
+  notifyNewOrder(order);
+
   res.status(201).json({ id: info.lastInsertRowid, total });
 });
 
@@ -97,6 +110,15 @@ router.post('/leads', (req, res) => {
     email: (email || '').trim(),
     message: (message || '').trim(),
   });
+  const lead = {
+    id: info.lastInsertRowid,
+    name: name.trim(),
+    phone: (phone || '').trim(),
+    email: (email || '').trim(),
+    message: (message || '').trim(),
+  };
+  notifyNewLead(lead);
+
   res.status(201).json({ id: info.lastInsertRowid });
 });
 
