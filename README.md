@@ -36,13 +36,14 @@ ADMIN_PASSWORD=your-secret-password npm start
 
 ## Деплой
 
-Подходит любой хостинг с Node.js (Render, Railway, VPS + PM2/systemd, Yandex Cloud):
+Боевой деплой на облачный сервер Рег.ру с доменом croid.ru — пошагово в
+`docs/deploy-regru.md` (systemd-сервис + Nginx + Let's Encrypt, готовые конфиги
+в `deploy/`). Подходит и любой другой хостинг с Node.js (Render, Railway, свой VPS):
 
 1. Скопируйте репозиторий на сервер, `cd server && npm install`
 2. Задайте переменные окружения: `PORT` (по умолчанию 3000), `ADMIN_PASSWORD`
-3. Запустите `npm start` (в проде — через PM2/systemd для автоперезапуска)
-4. Настройте домен и HTTPS (например, через Nginx + Let's Encrypt, либо встроенный
-   SSL хостинг-провайдера)
+3. Запустите `npm start` (в проде — через systemd/PM2 для автоперезапуска, см. `deploy/croid.service`)
+4. Настройте домен и HTTPS (Nginx + Let's Encrypt, см. `deploy/nginx.conf`)
 
 База данных — файл SQLite (`server/data.sqlite`), создаётся автоматически при первом
 запуске. Для продакшена делайте регулярный бэкап этого файла.
