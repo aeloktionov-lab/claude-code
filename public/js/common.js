@@ -1,6 +1,6 @@
 // Shared layout (header/footer) + cart helpers, used by every page.
 
-const CART_KEY = 'formapro_cart';
+const CART_KEY = 'croid_cart';
 
 function getCart() {
   try {

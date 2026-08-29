@@ -1,7 +1,7 @@
 {
   "name": "forma-pro-server",
   "version": "1.0.0",
-  "description": "Backend for FORMA.PRO corporate clothing store",
+  "description": "Backend for croid.ru corporate clothing store",
   "private": true,
   "main": "index.js",
   "scripts": {

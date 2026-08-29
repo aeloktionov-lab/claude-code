@@ -29,7 +29,7 @@ app.use('/api', apiRouter);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.listen(PORT, () => {
-  console.log(`FORMA.PRO server running on http://localhost:${PORT}`);
+  console.log(`croid.ru server running on http://localhost:${PORT}`);
   if (ADMIN_PASSWORD === 'change-me') {
     console.warn('WARNING: using default admin password — set ADMIN_PASSWORD env var before deploying.');
   }

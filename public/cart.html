@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Заявка — ФОРМА.PRO</title>
+  <title>Заявка — croid.ru</title>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body data-page="cart">
@@ -125,7 +125,7 @@
         if (!res.ok) throw new Error('request failed');
         const result = await res.json();
         feedback.innerHTML = `<div class="alert success">Заявка №${result.id} принята на сумму ${result.total.toLocaleString('ru-RU')} ₽. Мы свяжемся с вами в ближайшее время.</div>`;
-        localStorage.removeItem('formapro_cart');
+        localStorage.removeItem('croid_cart');
         form.reset();
         document.getElementById('cart-root').innerHTML = '';
         document.getElementById('checkout-block').querySelector('form').style.display = 'none';
