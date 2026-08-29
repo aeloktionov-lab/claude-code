@@ -46,8 +46,10 @@
               <div class="cat" style="color:var(--accent);font-weight:600;">${p.category}</div>
               <h1>${p.name}</h1>
               <p class="muted">${p.description}</p>
-              <div class="price">${p.price.toLocaleString('ru-RU')} ₽ / шт</div>
-              <div class="min-qty muted">Минимальная партия — ${p.minQty} шт</div>
+              <div class="price">от ${p.price.toLocaleString('ru-RU')} ₽ / шт</div>
+              <div class="min-qty muted">Минимальная партия — ${p.minQty} шт · срок пошива — ${p.leadTimeDays}</div>
+              <div class="muted" style="font-size:13px;margin-top:4px;">Готовых изделий на складе нет — шьём под заказ.
+                Точную цену и срок подтвердим после расчёта по вашему логотипу и тиражу.</div>
 
               <div class="field-row">
                 <label>Цвет</label>

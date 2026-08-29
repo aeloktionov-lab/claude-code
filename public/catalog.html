@@ -11,7 +11,8 @@
 
   <section class="container" style="padding-top:32px;">
     <h2 class="section-title">Каталог</h2>
-    <p class="section-sub">Минимальная партия — от 10 шт. Нанесение логотипа включено в расчёт.</p>
+    <p class="section-sub">Шьём под заказ — готовых изделий на складе нет. Минимальная партия —
+      от 10 шт, срок пошива зависит от модели и тиража. Нанесение логотипа включено в расчёт.</p>
     <div class="cat-grid" id="filters" style="margin-bottom:28px;"></div>
     <div class="product-grid" id="product-grid"></div>
   </section>
@@ -54,8 +55,8 @@
             <div class="body">
               <div class="cat">${p.category}</div>
               <h3>${p.name}</h3>
-              <div class="min-qty">От ${p.minQty} шт</div>
-              <div class="price">${p.price.toLocaleString('ru-RU')} ₽ / шт</div>
+              <div class="min-qty">От ${p.minQty} шт · пошив ${p.leadTimeDays}</div>
+              <div class="price">от ${p.price.toLocaleString('ru-RU')} ₽ / шт</div>
             </div>
           </a>`
           )
