@@ -1,0 +1,15 @@
+{
+  "BRAND_NAME": "ФОРМА.PRO",
+  "TAGLINE": "Одежда, в которой узнают ваш бренд",
+  "PHONE": "+7 (900) 000-00-00",
+  "EMAIL": "sales@forma.pro",
+  "ADDRESS": "г. Москва (укажите реальный адрес/офис при наличии)",
+  "TELEGRAM": "https://t.me/formapro",
+  "MIN_ORDER_QTY": 10,
+  "COLORS": {
+    "primary": "#1A2B4C",
+    "accent": "#E8622C",
+    "bg": "#F7F7F5",
+    "text": "#1C1C1C"
+  }
+}

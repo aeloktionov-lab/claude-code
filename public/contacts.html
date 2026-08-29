@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Контакты — ФОРМА.PRO</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body data-page="contacts">
+  <header id="site-header" class="site-header"></header>
+
+  <section class="container" style="padding-top:32px;">
+    <h2 class="section-title">Контакты</h2>
+    <p class="section-sub">Оставьте заявку — перезвоним и посчитаем смету в течение дня.</p>
+    <div id="form-feedback"></div>
+    <form id="lead-form" class="form-card">
+      <div class="field-row">
+        <label>Ваше имя *</label>
+        <input type="text" name="name" required />
+      </div>
+      <div class="field-row">
+        <label>Телефон</label>
+        <input type="tel" name="phone" />
+      </div>
+      <div class="field-row">
+        <label>Email</label>
+        <input type="email" name="email" />
+      </div>
+      <div class="field-row">
+        <label>Сообщение</label>
+        <textarea name="message" placeholder="Что нужно: тип одежды, количество, есть ли логотип"></textarea>
+      </div>
+      <button type="submit" class="btn block">Отправить</button>
+    </form>
+    <div id="contact-info" class="muted" style="margin-top:24px;"></div>
+  </section>
+
+  <footer id="site-footer" class="site-footer"></footer>
+  <script src="/js/common.js"></script>
+  <script>
+    fetchConfig().then((cfg) => {
+      document.getElementById('contact-info').innerHTML =
+        `Телефон: ${cfg.PHONE} · Email: ${cfg.EMAIL} · ${cfg.ADDRESS}`;
+    });
+
+    document.getElementById('lead-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form).entries());
+      const feedback = document.getElementById('form-feedback');
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error('request failed');
+        feedback.innerHTML = '<div class="alert success">Спасибо! Мы свяжемся с вами в ближайшее время.</div>';
+        form.reset();
+      } catch (err) {
+        feedback.innerHTML = '<div class="alert error">Не удалось отправить сообщение. Попробуйте ещё раз.</div>';
+      }
+    });
+  </script>
+</body>
+</html>

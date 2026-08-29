@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Заявка — ФОРМА.PRO</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body data-page="cart">
+  <header id="site-header" class="site-header"></header>
+
+  <section class="container" style="padding-top:32px;">
+    <h2 class="section-title">Ваша заявка</h2>
+    <div id="cart-root"></div>
+
+    <div id="checkout-block" style="display:none; margin-top:40px; max-width:520px;">
+      <h2 class="section-title">Оформление</h2>
+      <p class="section-sub">Мы свяжемся с вами для подтверждения сроков и оплаты.</p>
+      <div id="form-feedback"></div>
+      <form id="order-form" class="form-card">
+        <div class="field-row">
+          <label>Компания *</label>
+          <input type="text" name="company" required />
+        </div>
+        <div class="field-row">
+          <label>Контактное лицо *</label>
+          <input type="text" name="contactName" required />
+        </div>
+        <div class="field-row">
+          <label>Телефон *</label>
+          <input type="tel" name="phone" required />
+        </div>
+        <div class="field-row">
+          <label>Email</label>
+          <input type="email" name="email" />
+        </div>
+        <div class="field-row">
+          <label>Комментарий (макет логотипа, сроки и т.д.)</label>
+          <textarea name="comment"></textarea>
+        </div>
+        <button type="submit" class="btn block">Отправить заявку</button>
+      </form>
+    </div>
+  </section>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="/js/common.js"></script>
+  <script>
+    function renderCart() {
+      const cart = getCart();
+      const root = document.getElementById('cart-root');
+      const checkoutBlock = document.getElementById('checkout-block');
+
+      if (cart.length === 0) {
+        root.innerHTML = '<div class="empty-state">Заявка пуста. <a href="/catalog.html">Перейти в каталог</a></div>';
+        checkoutBlock.style.display = 'none';
+        return;
+      }
+
+      const rows = cart
+        .map(
+          (item, i) => `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.color || '—'}</td>
+          <td>${item.size || '—'}</td>
+          <td><input type="number" class="qty-input" min="1" value="${item.qty}" data-index="${i}" /></td>
+          <td>${item.price.toLocaleString('ru-RU')} ₽</td>
+          <td>${(item.price * item.qty).toLocaleString('ru-RU')} ₽</td>
+          <td><span class="remove-link" data-index="${i}">Удалить</span></td>
+        </tr>`
+        )
+        .join('');
+
+      const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+      root.innerHTML = `
+        <table class="cart-table">
+          <thead>
+            <tr><th>Товар</th><th>Цвет</th><th>Размер</th><th>Кол-во</th><th>Цена</th><th>Сумма</th><th></th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div class="cart-summary">
+          <div class="total"><span>Итого</span><span>${total.toLocaleString('ru-RU')} ₽</span></div>
+          <div class="muted" style="font-size:13px;">Финальная цена может измениться после согласования нанесения логотипа.</div>
+        </div>
+      `;
+
+      root.querySelectorAll('.qty-input').forEach((input) => {
+        input.addEventListener('change', () => {
+          const cart2 = getCart();
+          const idx = Number(input.dataset.index);
+          cart2[idx].qty = Math.max(1, parseInt(input.value, 10) || 1);
+          saveCart(cart2);
+          renderCart();
+        });
+      });
+      root.querySelectorAll('.remove-link').forEach((link) => {
+        link.addEventListener('click', () => {
+          removeFromCart(Number(link.dataset.index));
+          renderCart();
+        });
+      });
+
+      checkoutBlock.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCart);
+
+    document.getElementById('order-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form).entries());
+      const cart = getCart();
+      const feedback = document.getElementById('form-feedback');
+
+      try {
+        const res = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...data, items: cart }),
+        });
+        if (!res.ok) throw new Error('request failed');
+        const result = await res.json();
+        feedback.innerHTML = `<div class="alert success">Заявка №${result.id} принята на сумму ${result.total.toLocaleString('ru-RU')} ₽. Мы свяжемся с вами в ближайшее время.</div>`;
+        localStorage.removeItem('formapro_cart');
+        form.reset();
+        document.getElementById('cart-root').innerHTML = '';
+        document.getElementById('checkout-block').querySelector('form').style.display = 'none';
+        updateCartBadge();
+      } catch (err) {
+        feedback.innerHTML = '<div class="alert error">Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>';
+      }
+    });
+  </script>
+</body>
+</html>

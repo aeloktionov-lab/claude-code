@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#8A97A8"/>
+  <rect x="24" y="24" width="432" height="432" fill="none" stroke="#F7F7F5" stroke-width="2" stroke-dasharray="6 6" opacity="0.5"/>
+  <text x="240" y="230" font-family="system-ui, sans-serif" font-size="22" fill="#F7F7F5" text-anchor="middle" font-weight="600">Верхняя одежда</text>
+  <text x="240" y="260" font-family="system-ui, sans-serif" font-size="16" fill="#F7F7F5" text-anchor="middle" opacity="0.85">Куртка софтшелл с вышивкой</text>
+</svg>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Каталог — ФОРМА.PRO</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body data-page="catalog">
+  <header id="site-header" class="site-header"></header>
+
+  <section class="container" style="padding-top:32px;">
+    <h2 class="section-title">Каталог</h2>
+    <p class="section-sub">Минимальная партия — от 10 шт. Нанесение логотипа включено в расчёт.</p>
+    <div class="cat-grid" id="filters" style="margin-bottom:28px;"></div>
+    <div class="product-grid" id="product-grid"></div>
+  </section>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="/js/common.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const activeCategory = params.get('category') || '';
+
+    fetch('/api/products')
+      .then((r) => r.json())
+      .then((products) => {
+        const categories = [...new Set(products.map((p) => p.category))];
+        const filters = document.getElementById('filters');
+        filters.innerHTML =
+          `<a class="cat-card" href="/catalog.html" style="${activeCategory ? '' : 'outline:2px solid var(--accent);'}">Все категории</a>` +
+          categories
+            .map(
+              (c) =>
+                `<a class="cat-card" href="/catalog.html?category=${encodeURIComponent(c)}" style="${c === activeCategory ? 'outline:2px solid var(--accent);' : ''}">${c}</a>`
+            )
+            .join('');
+
+        const filtered = activeCategory
+          ? products.filter((p) => p.category === activeCategory)
+          : products;
+
+        const grid = document.getElementById('product-grid');
+        if (filtered.length === 0) {
+          grid.innerHTML = '<div class="empty-state">В этой категории пока нет товаров.</div>';
+          return;
+        }
+        grid.innerHTML = filtered
+          .map(
+            (p) => `
+          <a class="product-card" href="/product.html?id=${p.id}">
+            <img src="/${p.img}" alt="${p.name}" />
+            <div class="body">
+              <div class="cat">${p.category}</div>
+              <h3>${p.name}</h3>
+              <div class="min-qty">От ${p.minQty} шт</div>
+              <div class="price">${p.price.toLocaleString('ru-RU')} ₽ / шт</div>
+            </div>
+          </a>`
+          )
+          .join('');
+      });
+  </script>
+</body>
+</html>
