@@ -1,0 +1,15 @@
+[Unit]
+Description=croid.ru corporate clothing store
+After=network.target
+
+[Service]
+Type=simple
+User=croid
+WorkingDirectory=/var/www/croid/server
+EnvironmentFile=/var/www/croid/server/.env
+ExecStart=/usr/bin/node index.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

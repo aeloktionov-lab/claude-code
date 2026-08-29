@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>croid.ru — корпоративная одежда с логотипом</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body data-page="home">
+  <header id="site-header" class="site-header"></header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Корпоративная одежда с вашим логотипом — шьём под заказ</h1>
+      <p>Деловая форма, спецодежда, худи и промо-мерч. Готовых изделий на складе нет —
+        каждая партия шьётся под ваш логотип и тираж, от 10 штук, точно в срок.</p>
+      <a href="/catalog.html" class="btn">Смотреть каталог</a>
+      <a href="/contacts.html" class="btn secondary" style="margin-left:12px;">Обсудить заказ</a>
+    </div>
+  </section>
+
+  <section class="container">
+    <h2 class="section-title">Категории</h2>
+    <p class="section-sub">Всё для оформления сотрудников в единый стиль</p>
+    <div class="cat-grid" id="category-grid"></div>
+  </section>
+
+  <section class="container">
+    <h2 class="section-title">Как мы работаем</h2>
+    <p class="section-sub">Четыре шага от заявки до готовой партии</p>
+    <div class="cat-grid">
+      <div class="cat-card">1. Заявка<br /><span class="muted" style="font-weight:400;">Оставляете список позиций и логотип</span></div>
+      <div class="cat-card">2. Смета<br /><span class="muted" style="font-weight:400;">За 1 день считаем цену и сроки</span></div>
+      <div class="cat-card">3. Образец<br /><span class="muted" style="font-weight:400;">Согласуем цвет, размеры, нанесение</span></div>
+      <div class="cat-card">4. Партия<br /><span class="muted" style="font-weight:400;">Пошив и доставка партии на адрес</span></div>
+    </div>
+  </section>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="/js/common.js"></script>
+  <script>
+    fetch('/api/products')
+      .then((r) => r.json())
+      .then((products) => {
+        const categories = [...new Set(products.map((p) => p.category))];
+        const grid = document.getElementById('category-grid');
+        grid.innerHTML = categories
+          .map(
+            (c) =>
+              `<a class="cat-card" href="/catalog.html?category=${encodeURIComponent(c)}">${c}</a>`
+          )
+          .join('');
+      });
+  </script>
+</body>
+</html>

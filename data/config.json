@@ -1,0 +1,18 @@
+{
+  "BRAND_NAME": "croid.ru",
+  "TAGLINE": "Одежда, в которой узнают ваш бренд",
+  "PHONE": "+7 (900) 000-00-00",
+  "EMAIL": "sales@croid.ru",
+  "ADDRESS": "г. Москва (укажите реальный адрес/офис при наличии)",
+  "TELEGRAM": "https://t.me/croid",
+  "MIN_ORDER_QTY": 10,
+  "COLORS": {
+    "ink": "#1C1C1C",
+    "ink2": "#262626",
+    "ink3": "#2F2F2F",
+    "accent": "#CE7E4C",
+    "accentInk": "#A86334",
+    "paper": "#F4F1EC",
+    "fg": "#FFFFFF"
+  }
+}

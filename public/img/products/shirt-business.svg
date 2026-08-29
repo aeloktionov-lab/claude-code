@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#2F2F2F"/>
+  <rect x="1" y="1" width="478" height="478" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <rect x="28" y="28" width="52" height="4" fill="#CE7E4C"/>
+  <text x="240" y="290" font-family="system-ui, sans-serif" font-size="140" font-weight="800"
+    fill="rgba(255,255,255,0.10)" text-anchor="middle">Р</text>
+</svg>
